@@ -1,0 +1,69 @@
+CREATE TABLE Userdata (
+    userID int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    username varchar(255) NOT NULL,
+    email varchar(255) NOT NULL UNIQUE,
+    userpassword varchar(255) NOT NULL
+
+    );
+    
+ ALTER TABLE Userdata
+ADD CONSTRAINT UC_Person UNIQUE (email);
+    
+
+INSERT INTO userdata ( username,email,userpassword)
+VALUES ('prasanth','test1@test.com','test');
+
+ALTER TABLE userdata ADD COLUMN id SERIAL PRIMARY KEY;
+select * from userdata where email='test@test.com' and userpassword='test'
+
+
+CREATE TABLE Subcribtions (
+    subid int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    feedurl varchar(255) NOT NULL UNIQUE,
+    ImageURL varchar(255) NOT NULL ,
+    title varchar(255) NOT NULL
+
+    );
+    
+select * from Subcribtions
+DELETE FROM Subcribtions WHERE subid=18;
+
+
+
+CREATE TABLE usersubcribtions (
+    userid int,
+    subid int ,
+    PRIMARY KEY (userid, subid),
+    FOREIGN KEY (userid) REFERENCES userdata(userid),
+    FOREIGN KEY (subid) REFERENCES Subcribtions(subid)
+    );
+select * from usersubcribtions where userid=55
+
+CREATE TABLE feeddata (
+    dataid int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    subid int ,
+    title varchar(255),
+    link varchar(255),
+    pubdate DATE,
+    authur varchar(255),
+    feed_content varchar(1000000) unique,
+    FOREIGN KEY (subid) REFERENCES Subcribtions(subid)
+    );
+    
+   select DISTINCT * from feeddata where feed_cotent like "%failure said that the collapse appeared%"
+    
+   
+    
+    select * from Subcribtions
+    
+    select * from usersubcribtions where userid=27
+    DELETE FROM feeddata WHERE subid=18
+    
+    
+    
+    select u.userid,u.subid,s.title,s.feedurl from usersubcribtions u inner join Subcribtions s on u.subid=s.subid where u.userid=1
+-- home page feed 
+ select DISTINCT  f.dataid,f.subid,f.title,f.link,f.pubdate,f.authur,f.feed_content from feeddata f left outer join usersubcribtions u on f.subid=u.subid where u.userid=28 ORDER BY pubdate DESC
+ 
+--for distint feed
+select DISTINCT  f.dataid,f.subid,f.title,f.link,f.pubdate,f.authur,f.feed_content from feeddata f where f.subid=33
